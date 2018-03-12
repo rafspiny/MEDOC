@@ -15,6 +15,8 @@ import sys
 import pymysql.cursors
 from lib.sql_helper import Query_Executor
 
+managment_fields = ['filename', 'available_pmid', 'processed_pmid', 'available_pmid_list']
+
 ''' - - - - - - - - - - - - - -  
 medline_citation
 - - - - - - - - - - - - - -  '''
@@ -312,6 +314,14 @@ def send_medline_personal_name_subject(fields_medline_personal_name_subject, val
                                        parameters):
     sql_command = 'INSERT INTO ' + 'medline_personal_name_subject' + ' (' + ', '.join(
         fields_medline_personal_name_subject) + ') VALUES ' + ', '.join(values_tot_medline_personal_name_subject) + ' ;'
+    Query_Executor(parameters).execute(sql_command)
+
+
+def send_management(field_list, value_list, parameters):
+    # make sure the values are string
+    value_list = ['"%s"' % str(value) for value in value_list]
+    sql_command = 'INSERT INTO ' + 'medline_managment' + ' (' + ', '.join(
+        field_list) + ') VALUES (' + ', '.join(value_list) + ') ;'
     Query_Executor(parameters).execute(sql_command)
 
 

@@ -72,6 +72,7 @@ if __name__ == '__main__':
             values_tot_medline_personal_name_subject = []
 
             articles_count = 0
+            processed_pmid = 0
 
             # Step F: Create a dictionary with data to INSERT for every article
             for raw_article in articles:
@@ -93,6 +94,7 @@ if __name__ == '__main__':
                         values_tot_medline_citation.append('(' + ', '.join(values_medline_citation[0]) + ')')
                         if (len(values_tot_medline_citation) == insert_limit) or (
                                     articles_count == len(articles)):
+                            processed_pmid += len(values_tot_medline_citation)
                             getters.send_medline_citation(values_medline_citation[1], values_tot_medline_citation,
                                                           parameters)
                             values_tot_medline_citation = []
@@ -215,6 +217,7 @@ if __name__ == '__main__':
 
             # Step H: Write the remaining entries
             if len(values_tot_medline_citation) > 0:
+                processed_pmid += len(values_tot_medline_citation)
                 getters.send_medline_citation(values_medline_citation[1], values_tot_medline_citation,
                                               parameters)
             if len(values_tot_medline_article_language) > 0:
@@ -255,6 +258,16 @@ if __name__ == '__main__':
                 getters.send_medline_personal_name_subject(values_medline_personal_name_subject[1],
                                                        values_tot_medline_personal_name_subject,
                                                        parameters)
+
+            # Get the list of PMIDs that are present in the document
+            written_pmids = re.findall('MedlineCitation[^\n]*?>\n<PMID Version="\d">(\d+)</PMID>', str(articles),
+                                       re.IGNORECASE | re.DOTALL)
+            # Write the stats about the process
+            getters.send_management(getters.managment_fields,
+                                    [file_downloaded, len(articles), processed_pmid, ','.join(written_pmids)],
+                                    parameters
+                                    )
+
             values_tot_medline_citation = []
             values_tot_medline_article_language = []
             values_tot_medline_article_publication_type = []

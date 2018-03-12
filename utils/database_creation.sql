@@ -97,6 +97,11 @@ CREATE INDEX idx_other_id_pmid on medline_citation_other_id(pmid);
 CREATE TABLE medline_investigator (pmid	INTEGER NOT NULL, last_name VARCHAR(500), fore_name VARCHAR(50), first_name VARCHAR(50), middle_name VARCHAR(50), initials VARCHAR(30),  suffix VARCHAR(10), affiliation TEXT) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ;
 CREATE INDEX idx_invest_pmid on medline_investigator(pmid);
 
+#==============================================================
+# TABLE: medline_managment
+#==============================================================
+CREATE TABLE medline_managment (filename VARCHAR(100) NOT NULL, available_pmid INTEGER NOT NULL, processed_pmid INTEGER NOT NULL, available_pmid_list TEXT) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ;
+
 #=============================================================
 # Set permissions and volatile cardinality 
 #=============================================================
