@@ -53,8 +53,8 @@ class MEDOC(object):
             user=self.parameters.get('database', 'user'),
             password=self.parameters.get('database', 'password'),
             cursorclass=pymysql.cursors.DictCursor,
-            autocommit=True,
-            init_command='SET ROLE pubmed_role;')
+            autocommit=True
+            )
         cursor = connection.cursor()
         #~ cursor.execute('')
         #  Check if 'pubmed' db exists, if not, create it by executing SQL file line by line
@@ -275,7 +275,7 @@ class MEDOC(object):
                  'xml_file_name': gz,
                  'number_of_references': re.findall('<numberofreferences>(.*)</numberofreferences>', str(article)),
                  'citation_owner': re.findall('<medlinecitation .*?owner="(.*?)".*?>', str(article)),
-                 'citation_status': re.findall('<medlinecitation .*?status="([A-Za-z])".*?>', str(article))}
+                 'citation_status': re.findall('<medlinecitation .*?status="([A-Za-z]*)".*?>', str(article))}
              }
         )
 

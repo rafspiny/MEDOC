@@ -79,7 +79,7 @@ Simply run the following command from the MEDOC folder.
 
 #### Configuration
 
-Before you can run the code, you should take a look at `parameters.json` file and customize it according to your 
+Before you can run the code, you should take a look at `configuration.cfg` file and customize it according to your 
 environment.
 
 Plus, if you have already a user to access the DB you wish to create you can change the `schema` file to reflect that.
