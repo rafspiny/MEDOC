@@ -336,9 +336,9 @@ def __extract_values_array__(fields_names, values_output, key_pair_object):
     return values_output, fields_names
 
 
-def __dequote_value__(citation, field):
+def __dequote_value__(fields_dictionary, field):
     # Get "VALUE"
-    value = citation[field]
+    value = fields_dictionary[field]
     element = value
     if type(value) == list:
         element = '"N/A"'
@@ -346,8 +346,8 @@ def __dequote_value__(citation, field):
         if len(value) > 0:
             element = value[0]
         if len(value) > 1:
-            print('Warning: Discarding %d values for pmid %s and field %s' % (
-                len(value) - 1, citation['pmid'], field, citation)
+            print('Warning: Discarding %d values for pmid %s and field %s and values %s' % (
+                len(value) - 1, fields_dictionary['pmid'], field, ','.join(value)), file=sys.stderr
             )
 
     # Remove quotes and quote the result
