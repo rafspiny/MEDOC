@@ -355,11 +355,17 @@ def __dequote_value__(fields_dictionary, field):
         # Get the first element
         if len(value) > 0:
             element = value[0]
-        if len(value) > 1:
-            print('Warning: Discarding %d values for pmid %s and field %s and values %s' % (
-                len(value) - 1, fields_dictionary['pmid'], field, ','.join(value)), file=sys.stderr
-            )
+        # TODO Although this seems to be happen only for qualifiers, it should be handled correctly.
+        # For example it should be printed in the error log file or in a warning log file
+        # if len(value) > 1:
+        #     print('Warning: Discarding %d values for pmid %s and field %s and values %s' % (
+        #         len(value) - 1, fields_dictionary['pmid'], field, ','.join(value)), file=sys.stderr
+        #     )
 
-    # Remove quotes and quote the result
+    # Remove quotes and quote the result and make sure there is no escape sequence lead character at the end of the
+    # string
+    # TODO I should not clean data here, but use the escape functionality provided by the MySQL module
+    if element.endswith('\\'):
+        element = element[:-1]
     value_to_append = '"' + element.replace('"', '') + '"'
     return value_to_append

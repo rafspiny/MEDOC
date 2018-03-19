@@ -262,9 +262,10 @@ if __name__ == '__main__':
             # Get the list of PMIDs that are present in the document
             written_pmids = re.findall('MedlineCitation[^\n]*?>\n<PMID Version="\d">(\d+)</PMID>', str(articles),
                                        re.IGNORECASE | re.DOTALL)
+            written_pmids_str = ','.join(written_pmids)
             # Write the stats about the process
             getters.send_management(getters.managment_fields,
-                                    [file_downloaded, len(articles), processed_pmid, ','.join(written_pmids)],
+                                    [file_downloaded, len(articles), processed_pmid, written_pmids_str],
                                     parameters
                                     )
 
@@ -303,3 +304,5 @@ if __name__ == '__main__':
             del values_tot_medline_investigator
             del values_tot_medline_mesh_heading
             del values_tot_medline_personal_name_subject
+            del written_pmids
+            del written_pmids_str
