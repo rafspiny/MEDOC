@@ -1,1 +1,14 @@
-# Created by .ignore support plugin (hsz.mobi)
+# data
+pubmed_data/
+
+# Python related
+__pycache__/
+
+# Compiled python files
+lib/**/*.pyc
+
+# IDE
+.idea/
+
+# virtualenv
+venv/
