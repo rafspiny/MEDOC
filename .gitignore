@@ -5,7 +5,7 @@ pubmed_data/
 __pycache__/
 
 # Compiled python files
-lib/**/*.pyc
+**/*.pyc
 
 # IDE
 .idea/

@@ -180,7 +180,21 @@ class MEDOC(object):
         #  Souping
         soup = BeautifulSoup(data, 'lxml')
         articles = soup.find_all('pubmedarticle')
+
+        # TODO On huge file, BeautifulSoup will only return a very limited amount of tags for the fins_all.
+        # Given that I am not able today to play with the BeautifulSoup parser and try to use a SAX one, I just double
+        # check with regex if everything is ok, and in case not use regex to retrieve the data.
+        # I experimented on a 270MB xml file from PubMed: pubmed18n0597.xml.gz
+        matches = re.findall('<pubmedarticle>', data, re.IGNORECASE)
+        if len(articles) != len(matches):
+            print('The underlying parser failed to retrieve all the elements. Found {} out of {}. Loading the others '
+                  'now...'.format(len(articles), len(matches)))
+            # Something is not right
+            articles = re.findall('(<pubmedarticle>.*?</pubmedarticle>)', data, re.IGNORECASE | re.DOTALL)
+            print('{} elements are now loaded.'.format(len(articles)))
+
         print('Elapsed time: {} sec for module: {}'.format(round(time.time() - start_time, 2), MEDOC.parse.__name__))
+        del soup
 
         return articles
 
@@ -456,6 +470,7 @@ class MEDOC(object):
                            'suffix': re.findall('<suffix>(.*)</suffix>', str(subject))}
                  })
 
+        del soup_article
         #  Final return, for every articles
         return article_INSERT_list
 

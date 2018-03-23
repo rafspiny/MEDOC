@@ -76,7 +76,9 @@ if __name__ == '__main__':
 
             # Step F: Create a dictionary with data to INSERT for every article
             for raw_article in articles:
-
+                # This needs to be done if we are using regexp to extract data, and not BeautifulSoup
+                # TODO remove this as soon as BeautifulSoup can handle very large XML files with the lxml parser
+                raw_article = raw_article.lower()
                 #  Loading
                 articles_count += 1
                 if articles_count % 10000 == 0:
@@ -260,7 +262,7 @@ if __name__ == '__main__':
                                                        parameters)
 
             # Get the list of PMIDs that are present in the document
-            written_pmids = re.findall('MedlineCitation[^\n]*?>\n<PMID Version="\d">(\d+)</PMID>', str(articles),
+            written_pmids = re.findall('MedlineCitation[^\n]*?>\s*\n\s*<PMID Version="\d">(\d+)</PMID>', str(file_content),
                                        re.IGNORECASE | re.DOTALL)
             written_pmids_str = ','.join(written_pmids)
             # Write the stats about the process
