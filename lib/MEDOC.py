@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding: utf8
+# -*- coding: utf-8 -*-
 
 # ==============================================================================
 # Title: MEDOC
@@ -191,6 +191,7 @@ class MEDOC(object):
                   'now...'.format(len(articles), len(matches)))
             # Something is not right
             articles = re.findall('(<pubmedarticle>.*?</pubmedarticle>)', data, re.IGNORECASE | re.DOTALL)
+            articles = [article.lower() for article in articles]
             print('{} elements are now loaded.'.format(len(articles)))
 
         print('Elapsed time: {} sec for module: {}'.format(round(time.time() - start_time, 2), MEDOC.parse.__name__))

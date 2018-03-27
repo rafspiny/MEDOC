@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding: utf8
+# -*- coding: utf-8 -*-
 
 # ==============================================================================
 # Title: MEDOC
@@ -76,9 +76,6 @@ if __name__ == '__main__':
 
             # Step F: Create a dictionary with data to INSERT for every article
             for raw_article in articles:
-                # This needs to be done if we are using regexp to extract data, and not BeautifulSoup
-                # TODO remove this as soon as BeautifulSoup can handle very large XML files with the lxml parser
-                raw_article = raw_article.lower()
                 #  Loading
                 articles_count += 1
                 if articles_count % 10000 == 0:
