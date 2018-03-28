@@ -49,33 +49,33 @@ You may also need `python-dev`. You can also install it with the same command:
 
 #### Installation
 
-The second step is to install external dependencies and to cythonize python functions.
-
-Thus, run the file *SETUP.py*
-
-	cd /path/to/MEDOC
-	python3 utils/SETUP.py build_ext --inplace
-
-This script will:
-
-* Check for pip3 and give command to install it
-* Check for Cython and give command to install it
-* Check for pymysql and give command to install it
-* Check for bs4 and give command to install it
-
-There's no need to Cythonize functions anymore, they've been optimized.
-
-**Alternatively** you can exploit the requirements.txt file shipped with the project.
+The quickest thing to do is to just install the dependency included in the repo through pip.
 Simply run the following command from the MEDOC folder.
 
 	pip3 install -r requirements.txt
 
-	bs4==0.0.1
+This will install the following python packages
+
 	beautifulsoup4==4.6.0
-	Cython==0.27.2
-	html5lib==0.999999999
-	lxml==3.5.0
-	PyMySQL==0.7.11
+    bs4==0.0.1
+    Cython==0.28.1
+    html5lib==1.0.1
+    lxml==4.2.1
+    PyMySQL==0.8.0
+    six==1.11.0
+    SQLAlchemy==1.2.5
+    webencodings==0.5.1
+
+**NOTE**: If python3 is your default, you do not need to specify `python3` or `pip3` but just use `python` and `pip`.
+
+**Alternatively** you can run the file *SETUP.py* that will check for all the dependencies 
+and print out what is missing.
+
+This script will:
+
+* Check for pip3 and give you command to install it
+* Check for pymysql and give you command to install it
+* Check for bs4 and give you command to install it
 
 #### Configuration
 
@@ -84,6 +84,7 @@ environment.
 
 Plus, if you have already a user to access the DB you wish to create you can change the `schema` file to reflect that.
 You can change the DB_USER and the DB_PASSWORD fields with the following command.
+You can change other option of the database connection as well.
 Suppose your credentials are: my_custom_user/my_secret_password
 
 ```bash
@@ -92,15 +93,17 @@ sed -i'' -e "s/\bdb_user\b/my_custom_user/g" $MEDOC_SQL_FILE
 sed -i'' -e "s/\bDB_PASSWORD\b/my_secret_password/g" $MEDOC_SQL_FILE
 ```
 
-NOTE: If python3 is your default, you do not need to specify `python3` or `pip3` but just use `python` and `pip`.
+One thing you want to change for sure, is the path for the log files.
+Suppose the $MEDOC_SOURCE_DIR contains your MEDOC path
+```bash
+escaped_rhs=$(printf '%s\n' "$MEDOC_SOURCE_DIR" | sed 's:[\/&]:\\&:g;$!s/$/\\/')
+sed -i'' -e "s/\/home\/emeric\/1_Github\/MEDOC/${escaped_rhs}/g" configuration.cfg
+```
 
 ### Launch the programm
+Make sure you have correctly configured the `configuration.cfg` option file first, before proceeding. 
 
-Open file 'parameters.json' and change complete path value including your /home/xxx/...
-
-If your computer has 16Go or more of RAM, you can set '_insert_command_limit_' to '1000' of greater.
-
-Leave database name to '_pubmed_' but change the mySQL password to yours.
+If your computer has 16G or more of RAM, you can set '_insert_command_limit_' to '1000' of greater.
 
 Then, simply execute :
 
