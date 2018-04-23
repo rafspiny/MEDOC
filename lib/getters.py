@@ -41,7 +41,7 @@ def get_medline_citation(insert_table):
 
 
 def send_medline_citation(fields_medline_citation, values_tot_medline_citation, parameters):
-    sql_command = 'INSERT INTO ' + 'medline_citation' + ' (' + ', '.join(
+    sql_command = 'REPLACE INTO ' + 'medline_citation' + ' (' + ', '.join(
         fields_medline_citation) + ') VALUES ' + ', '.join(values_tot_medline_citation) + ' ;'
     Query_Executor(parameters).execute(sql_command)
 
