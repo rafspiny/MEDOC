@@ -21,6 +21,24 @@ class Query_Executor:
             # init_command='USE pubmed_raw;'
         )
 
+    def execute_select(self, sql_command):
+        result_set = []
+        connection = self.connection
+        cursor = connection.cursor()
+        try:
+            #~ cursor.execute('SET ROLE pubmed_role;')
+            cursor.execute(sql_command)
+            for row in cursor:
+                result_set.append(dict(row))
+            connection.close()
+        except:
+            exception = sys.exc_info()[1]
+            errors_log = open(self.log_file, 'a')
+            errors_log.write('{} - {}\n'.format(exception, sql_command))
+            errors_log.close()
+
+        return result_set
+
     def execute(self, sql_command):
         connection = self.connection
         cursor = connection.cursor()
@@ -31,5 +49,5 @@ class Query_Executor:
         except:
             exception = sys.exc_info()[1]
             errors_log = open(self.log_file, 'a')
-            errors_log.write('{} - {}\n'.format(exception, sql_command))
+            errors_log.write('{} - {}\n'.format(exception, sql_command.encode('utf8')))
             errors_log.close()

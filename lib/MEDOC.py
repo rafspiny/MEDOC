@@ -17,11 +17,11 @@ import os
 import re
 import time
 import gzip
-import json
 import configparser
 from ftplib import FTP
 import pymysql.cursors
 from bs4 import BeautifulSoup
+from lib.sql_helper import Query_Executor
 
 
 class MEDOC(object):
@@ -85,6 +85,29 @@ class MEDOC(object):
                                                            MEDOC.create_pubmedDB.__name__))
         cursor.close()
         connection.close()
+
+    def get_imported_files(self):
+        processed_files_query = """
+        SELECT * 
+        FROM medline_managment
+        WHERE available_pmid = processed_pmid;"""
+        results = Query_Executor(self.parameters).execute_select(processed_files_query)
+
+        def normalize_management_data(data):
+            """
+            Explode the list of processed PubMed IDS
+            :param data: 
+            :return: 
+            """
+            pmid_list_key = 'available_pmid_list'
+            if pmid_list_key in data.keys():
+                data[pmid_list_key] = data[pmid_list_key].split(',')
+            return data
+
+        processed_files = [normalize_management_data(result) for result in results]
+        processed_files = [element['filename'] for element in processed_files]
+
+        return processed_files
 
     def get_file_list(self):
         print('- ' * 30 + 'EXTRACTING FILES LIST FROM FTP')

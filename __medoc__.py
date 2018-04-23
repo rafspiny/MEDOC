@@ -30,6 +30,7 @@ if __name__ == '__main__':
 
     # Step A : Create database if not exist
     MEDOC.create_pubmedDB()
+    correctly_imported_filenames = MEDOC.get_imported_files()
 
     # Step B: get file list on NCBI
     gz_file_list = MEDOC.get_file_list()
@@ -39,7 +40,8 @@ if __name__ == '__main__':
 
         start_time = time.time()
 
-        if file_to_download not in open(insert_log_path).read().splitlines():
+        filename = file_to_download.split('/')[-1:][0]
+        if filename not in correctly_imported_filenames:
 
             # Step C: download file if not already
             file_downloaded = MEDOC.download(file_name=file_to_download)
@@ -305,3 +307,5 @@ if __name__ == '__main__':
             del values_tot_medline_personal_name_subject
             del written_pmids
             del written_pmids_str
+        else:
+            print('File %s already processed' % file_to_download)
