@@ -70,7 +70,7 @@ CREATE INDEX idx_lang on medline_article_language(pmid, language);
 #==============================================================
 # TABLE: medline_grant 
 #==============================================================
-CREATE TABLE medline_grant(pmid INTEGER NOT NULL, grant_id VARCHAR(100) NOT NULL, acronym VARCHAR(100), agency VARCHAR(500), country VARCHAR(500)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ;
+CREATE TABLE medline_grant(pmid INTEGER NOT NULL, grant_id VARCHAR(500) NOT NULL, acronym VARCHAR(100), agency VARCHAR(500), country VARCHAR(500)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ;
 CREATE INDEX pk_medline_grant on medline_grant(pmid, grant_id, country);
 
 #==============================================================
